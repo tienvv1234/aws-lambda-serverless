@@ -123,3 +123,29 @@ aws sts get-caller-identity
 -   There are 2 parts to lambda pricing: the number of request and the duration of each request in GB second
 -   AWS lambda free tier: 1000 request/mo + 400 GB-seconds/mo
 -   AWS charges just about 20 cents per 1 million request + 0.00001667 dollars per GB seconds
+
+## Velocity Template Language
+
+-   \$context variable which gives infomation about the api context.
+-   \$input variable
+-   \$stage variable
+-   \$util variable
+
+## To endable CloudWatch for Api Gateway
+
+-   Go to Setting add ARN role make sure IAM role in IAM is created.
+
+## how to generate client SDKs
+
+## Api Gateway Pricing
+
+-   Number of Api calls + Data Transfer & caching
+-   Up to 1 million api calls per month are included in the free tier after first 12 month then, 3,5\$ per million API calls (USA region)
+
+## lambda version
+
+-   If we don't explicitly create and use a version, lambda will use the latest version, the latest version is always denoted by `$LATEST`
+
+## lambda alias
+
+-   for automatically public api version not by handly
