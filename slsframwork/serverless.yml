@@ -1,0 +1,59 @@
+service: slsframwork
+
+plugins:
+    - serverless-offline
+
+provider:
+    name: aws
+    runtime: nodejs8.10
+    region: us-east-1
+    stage: test
+    memorySize: 256
+    timeout: 10
+functions:
+    hello:
+        handler: handler.hello
+        memorySize: 128
+        timeout: 3
+        vpc:
+            securityGroupIds:
+                - sg-7a215c2e
+            subnetIds:
+                - subnet-0007de4d
+                - subnet-3a626b5d
+                - subnet-3fe0ea63
+
+    add:
+        handler: add.add
+        events:
+            # we want to have a trigger from api gateway
+            # we need declare an array or list wish dash
+            - http: # this corresponds to an api gateway event
+                  path: math/add
+                  method: post
+                  cors: true
+                  # we can add more properties to this lambda like memory size, timout and so on
+    addBm:
+        handler: add-bm.add
+        events:
+            - http:
+                  path: math/add-bm
+                  method: post
+                  integration: lambda
+                  request:
+                      template:
+                          application/json: >
+                              #set($inputRoot = $input.path('$'))
+                              {
+                                  "num1": $inputRoot.input.operand1,
+                                  "num2": $inputRoot.input.operand2
+                              }
+                  response:
+                      headers:
+                          Access-Control-Allow-Origin: "'*'"
+                          Context-Type: "'application/json'"
+                      template: >
+                          #set($inputRoot = $input.path('$'))
+                          {
+                              "result": $inputRoot
+                          }
